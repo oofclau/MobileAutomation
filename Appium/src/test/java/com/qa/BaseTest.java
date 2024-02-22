@@ -23,12 +23,10 @@ import java.util.Objects;
 import java.util.Properties;
 
 public class BaseTest {
-    protected AppiumDriver driver;
-    protected Properties props;
-    InputStream inputStream;
-    FileInputStream fileInputStream;
+    protected static AppiumDriver driver;
+    protected static Properties props;
     public BaseTest() {
-        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+        //PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
     @Parameters({"platformName", "platformVersion", "deviceName"})
     @BeforeTest
@@ -36,6 +34,8 @@ public class BaseTest {
         try {
             props = new Properties();
             String propFileName = "config.properties";
+
+            InputStream inputStream;
 
             inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
             props.load(inputStream);
@@ -59,7 +59,7 @@ public class BaseTest {
 
             driver = new AndroidDriver(url, caps);
             String sessionId = driver.getSessionId().toString();
-
+            PageFactory.initElements(new AppiumFieldDecorator(driver), this);
         }
         catch (Exception e) {
             e.printStackTrace();
